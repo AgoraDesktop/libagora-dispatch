@@ -152,7 +152,9 @@ else()
   endif()
 endif()
 
-option(INSTALL_PRIVATE_HEADERS "installs private headers in the same location as the public ones" OFF)
+# Agora defaults this ON: Core Foundation includes <dispatch/private.h>, so the private
+# headers must be installed for the component to be consumable.
+option(INSTALL_PRIVATE_HEADERS "installs private headers in the same location as the public ones" ON)
 
 option(ENABLE_THREAD_LOCAL_STORAGE "enable usage of thread local storage via _Thread_local" ON)
 set(DISPATCH_USE_THREAD_LOCAL_STORAGE ${ENABLE_THREAD_LOCAL_STORAGE})
@@ -329,3 +331,25 @@ if(BUILD_TESTING)
 endif()
 
 add_subdirectory(cmake/modules)
+
+# ---------------------------------------------------------------------------
+# CMake package: `find_package(dispatch CONFIG)` from an installed prefix.
+# (The build tree keeps its own export, generated in cmake/modules.)
+# ---------------------------------------------------------------------------
+include(CMakePackageConfigHelpers)
+
+install(EXPORT dispatchExports
+    FILE dispatchTargets.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/dispatch)
+
+configure_package_config_file(cmake/dispatchConfig.install.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/dispatchConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/dispatch)
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/dispatchConfigVersion.cmake
+    VERSION 1.3
+    COMPATIBILITY SameMajorVersion)
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/dispatchConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/dispatchConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/dispatch)

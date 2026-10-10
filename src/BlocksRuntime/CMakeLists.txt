@@ -15,7 +15,8 @@ if(WIN32)
 endif()
 
 target_include_directories(BlocksRuntime PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR})
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 if(HAVE_OBJC AND CMAKE_DL_LIBS)
   target_link_libraries(BlocksRuntime PUBLIC
     ${CMAKE_DL_LIBS})

@@ -87,10 +87,11 @@ if(HAVE_OBJC)
 endif()
 
 target_include_directories(dispatch PUBLIC
-  ${PROJECT_BINARY_DIR}
-  ${PROJECT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_BINARY_DIR})
+  "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>"
+  "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
+  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 target_include_directories(dispatch PRIVATE
   ${PROJECT_SOURCE_DIR}/private)
 
@@ -146,7 +147,9 @@ if (C_SUPPORTS_OMIT_LEAF_FRAME_POINTER)
 endif()
 
 if(LibRT_FOUND)
-  target_link_libraries(dispatch PRIVATE RT::rt)
+  # Link librt by name: an imported target in the interface would not resolve for a
+  # consumer importing this target (Agora change).
+  target_link_libraries(dispatch PRIVATE rt)
 endif()
 target_link_libraries(dispatch PRIVATE
   Threads::Threads)

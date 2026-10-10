@@ -1,0 +1,15 @@
+@PACKAGE_INIT@
+
+# Consume libdispatch (libagora-dispatch), Agora's dispatch and blocks runtime.
+#
+# Adds the imported targets `dispatch` and `BlocksRuntime` (the same names the
+# component's build tree exports), so consumers link them the same way whether
+# libagora-dispatch is consumed from its build tree or an installed prefix.
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(Threads)
+
+include("${CMAKE_CURRENT_LIST_DIR}/dispatchTargets.cmake")
+
+check_required_components(dispatch)

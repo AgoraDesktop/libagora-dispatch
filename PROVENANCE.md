@@ -12,7 +12,7 @@ swift-corelibs-libdispatch project. It supplies the dispatch runtime and the blo
 | Upstream commit date | 2026-04-30 |
 | Extraction | the upstream repository root, placed at this repository's root |
 | Extraction date | 2026-10-10 |
-| Source changes by Agora | Swift overlay and build integration removed; artifact renamed — see *Agora changes* |
+| Source changes by Agora | Swift removed; artifact renamed; CMake package added — see *Agora changes* |
 
 ## What was copied
 
@@ -60,6 +60,21 @@ The CMake target keeps upstream's name, `dispatch`, so `target_link_libraries(..
 unchanged. The `link` autolink directives in `dispatch/generic/module.modulemap` were updated from
 `link "dispatch"` to `link "agora-dispatch"` to match. The `BlocksRuntime` library keeps its upstream
 name.
+
+### CMake package
+
+The build installs a CMake package, so a consumer uses `find_package(dispatch CONFIG)` against an
+installed prefix:
+
+- `target_include_directories(... PUBLIC ...)` on `dispatch` and `BlocksRuntime` is wrapped in
+  `$<BUILD_INTERFACE:…>` with a new `$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>`, so an
+  installed target points at `<prefix>/include` (which holds `dispatch/`, `os/`, `Block.h`);
+- librt is linked by name (`rt`) rather than through the `RT::rt` imported target, which would not
+  resolve for a consumer importing the target;
+- `INSTALL_PRIVATE_HEADERS` defaults **ON** — Core Foundation includes `<dispatch/private.h>`, so the
+  private headers must be installed for the component to be consumable;
+- `install(EXPORT dispatchExports …)` plus `dispatchConfig.cmake` / `dispatchConfigVersion.cmake` are
+  installed under `lib/cmake/dispatch`.
 
 ## Licence and attribution
 

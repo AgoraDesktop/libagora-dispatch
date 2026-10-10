@@ -44,5 +44,11 @@ Upstream's CMake build is kept (`project(dispatch LANGUAGES C CXX)`, building `d
 library is built as **`libagora-dispatch`** (`libagora-dispatch.a` when static, `libagora-dispatch.so`
 when shared; see [`PROVENANCE.md`](PROVENANCE.md)). The build needs only a C and C++ compiler.
 
-`libagora-core` consumes the result with `find_package(dispatch CONFIG)` — point it at this
-repository's `build/cmake/modules`.
+### Install
+
+```sh
+cmake --install build --prefix <prefix>
+```
+
+The build installs a CMake package, so a consumer uses `find_package(dispatch CONFIG)` with
+`-DCMAKE_PREFIX_PATH=<prefix>` — including `libagora-core`.
