@@ -10,8 +10,7 @@ if(WIN32)
     target_compile_definitions(BlocksRuntime PUBLIC
       BlocksRuntime_STATIC)
     target_compile_options(BlocksRuntime PUBLIC
-      "$<$<COMPILE_LANGUAGE:C,CXX>:SHELL:$<$<BOOL:${MSVC}>:-Xclang >-static-libclosure>"
-      $<$<COMPILE_LANGUAGE:Swift>:SHELL:-Xcc -static-libclosure>)
+      "$<$<COMPILE_LANGUAGE:C,CXX>:SHELL:$<$<BOOL:${MSVC}>:-Xclang >-static-libclosure>")
   endif()
 endif()
 

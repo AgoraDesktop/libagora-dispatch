@@ -75,11 +75,6 @@ function(add_unit_test name)
                                ${CMAKE_CURRENT_BINARY_DIR}
                                ${CMAKE_CURRENT_SOURCE_DIR}
                                ${PROJECT_SOURCE_DIR})
-  if(ENABLE_SWIFT)
-    # For testing in swift.org CI system; make deadlines lenient by default
-    # to reduce probability of test failures due to machine load.
-    target_compile_options(${name} PRIVATE -DLENIENT_DEADLINES=1)
-  endif()
   target_include_directories(${name}
                              SYSTEM BEFORE PRIVATE
                                "${BlocksRuntime_INCLUDE_DIR}")

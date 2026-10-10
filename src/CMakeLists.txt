@@ -80,8 +80,7 @@ endif()
 if(HAVE_OBJC)
   target_sources(dispatch PRIVATE
     data.m
-    object.m
-    swift/DispatchStubs.m)
+    object.m)
 endif()
 
 target_include_directories(dispatch PUBLIC
@@ -95,8 +94,6 @@ target_include_directories(dispatch PRIVATE
 if(NOT BUILD_SHARED_LIBS)
   target_compile_definitions(dispatch PUBLIC
     dispatch_STATIC)
-  target_compile_options(dispatch PUBLIC
-    "$<$<COMPILE_LANGUAGE:Swift>:SHELL:-Xcc -Ddispatch_STATIC>")
 endif()
 if(WIN32)
   target_compile_definitions(dispatch PRIVATE
@@ -175,10 +172,6 @@ endif()
 
 if(LINKER_SUPPORTS_BUILD_ID)
   target_link_options(dispatch PRIVATE "LINKER:--build-id=sha1")
-endif()
-
-if(ENABLE_SWIFT)
-  add_subdirectory(swift)
 endif()
 
 set_property(GLOBAL APPEND PROPERTY DISPATCH_EXPORTS dispatch)

@@ -21,7 +21,7 @@ cross-platform libdispatch used by Swift on Linux and Windows.
 |---|---|
 | Upstream | https://github.com/swiftlang/swift-corelibs-libdispatch |
 | Revision | `swift-6.4.0-RELEASE` (`024805abec6daa9cdda569fd736b9c7686dfd735`, 2026-04-30) |
-| Agora changes | none yet — see [`PROVENANCE.md`](PROVENANCE.md) |
+| Agora changes | Swift overlay and Swift build integration removed — see [`PROVENANCE.md`](PROVENANCE.md) |
 
 The full record is in [`PROVENANCE.md`](PROVENANCE.md).
 
@@ -33,5 +33,6 @@ permissive-only policy. See [`LICENSE`](LICENSE).
 ## Build
 
 Upstream's CMake build is kept (`project(dispatch LANGUAGES C CXX)`, building `dispatch` from
-`src/`). It is not yet wired into Agora's standalone build. Upstream's Swift overlay (`src/swift/`,
-gated by the `ENABLE_SWIFT` option) is off by default and is not used by Agora.
+`src/`). It is not yet wired into Agora's standalone build. Upstream's Swift overlay and its
+`ENABLE_SWIFT` build integration have been removed (see [`PROVENANCE.md`](PROVENANCE.md)); the build
+now needs only a C and C++ compiler.

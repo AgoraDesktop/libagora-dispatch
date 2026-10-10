@@ -24,10 +24,4 @@ install(FILES
           time.h
         DESTINATION
           "${INSTALL_DISPATCH_HEADERS_DIR}")
-if(ENABLE_SWIFT)
-  install(FILES
-            ${DISPATCH_MODULE_MAP}
-          DESTINATION
-            "${INSTALL_DISPATCH_HEADERS_DIR}")
-endif()
 

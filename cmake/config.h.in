@@ -187,9 +187,6 @@
 /* Define to 1 if you have the `strlcpy' function. */
 #cmakedefine01 HAVE_STRLCPY
 
-/* Define if building for Swift */
-#undef HAVE_SWIFT
-
 /* Define to 1 if you have the `sysconf' function. */
 #cmakedefine01 HAVE_SYSCONF
 

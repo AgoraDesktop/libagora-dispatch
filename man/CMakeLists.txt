@@ -1,6 +1,5 @@
 
 # TODO(compnerd) add symlinks
-if(NOT ENABLE_SWIFT)
   install(FILES
             dispatch.3
             dispatch_after.3
@@ -20,4 +19,3 @@ if(NOT ENABLE_SWIFT)
             dispatch_time.3
           DESTINATION
             "${CMAKE_INSTALL_FULL_MANDIR}/man3")
-endif()

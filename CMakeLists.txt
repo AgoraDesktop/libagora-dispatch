@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.26...3.29)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-if(POLICY CMP0157 AND CMAKE_Swift_COMPILER_USE_OLD_DRIVER)
-  cmake_policy(SET CMP0157 OLD)
-endif()
-
 if(POLICY CMP0181)
   cmake_policy(SET CMP0181 NEW)
 endif()
@@ -157,11 +153,6 @@ else()
 endif()
 
 option(INSTALL_PRIVATE_HEADERS "installs private headers in the same location as the public ones" OFF)
-
-option(ENABLE_SWIFT "enable libdispatch swift overlay" OFF)
-if(ENABLE_SWIFT)
-  enable_language(Swift)
-endif()
 
 option(ENABLE_THREAD_LOCAL_STORAGE "enable usage of thread local storage via _Thread_local" ON)
 set(DISPATCH_USE_THREAD_LOCAL_STORAGE ${ENABLE_THREAD_LOCAL_STORAGE})
@@ -319,20 +310,10 @@ configure_file("${PROJECT_SOURCE_DIR}/cmake/config.h.in"
 add_compile_definitions($<$<COMPILE_LANGUAGE:C,CXX>:HAVE_CONFIG_H>)
 
 
-if(ENABLE_SWIFT)
-  include(SwiftSupport)
-  option(dispatch_INSTALL_ARCH_SUBDIR "Install libraries under an architecture subdirectory" NO)
-
-  set(INSTALL_TARGET_DIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/${dispatch_PLATFORM}$<$<BOOL:${dispatch_INSTALL_ARCH_SUBDIR}>:/${dispatch_ARCH}>" CACHE PATH "Path where the libraries will be installed")
-  set(INSTALL_DISPATCH_HEADERS_DIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/dispatch" CACHE PATH "Path where the headers will be installed for libdispatch")
-  set(INSTALL_BLOCK_HEADERS_DIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/Block" CACHE PATH "Path where the headers will be installed for the blocks runtime")
-  set(INSTALL_OS_HEADERS_DIR "${CMAKE_INSTALL_LIBDIR}/swift$<$<NOT:$<BOOL:${BUILD_SHARED_LIBS}>>:_static>/os" CACHE PATH "Path where the os/ headers will be installed")
-else()
-  set(INSTALL_TARGET_DIR "${CMAKE_INSTALL_LIBDIR}" CACHE PATH "Path where the libraries will be installed")
-  set(INSTALL_DISPATCH_HEADERS_DIR "include/dispatch" CACHE PATH "Path where the headers will be installed")
-  set(INSTALL_BLOCK_HEADERS_DIR "include" CACHE PATH "Path where the headers will be installed for the blocks runtime")
-  set(INSTALL_OS_HEADERS_DIR "include/os" CACHE PATH "Path where the headers will be installed")
-endif()
+set(INSTALL_TARGET_DIR "${CMAKE_INSTALL_LIBDIR}" CACHE PATH "Path where the libraries will be installed")
+set(INSTALL_DISPATCH_HEADERS_DIR "include/dispatch" CACHE PATH "Path where the headers will be installed")
+set(INSTALL_BLOCK_HEADERS_DIR "include" CACHE PATH "Path where the headers will be installed for the blocks runtime")
+set(INSTALL_OS_HEADERS_DIR "include/os" CACHE PATH "Path where the os/ headers will be installed")
 
 
 add_subdirectory(dispatch)

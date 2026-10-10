@@ -12,7 +12,7 @@ swift-corelibs-libdispatch project. It supplies the dispatch runtime and the blo
 | Upstream commit date | 2026-04-30 |
 | Extraction | the upstream repository root, placed at this repository's root |
 | Extraction date | 2026-10-10 |
-| Source changes by Agora | none |
+| Source changes by Agora | Swift overlay and Swift build integration removed — see *Agora changes* |
 
 ## What was copied
 
@@ -25,6 +25,25 @@ Dropped: only VCS and CI metadata — `.git/`, `.github/`, `.gitignore`, `.mailm
 
 Upstream's `README.md` is kept as `UPSTREAM-README.md` so this repository can carry its own
 `README.md`.
+
+## Agora changes
+
+Agora does not support Swift, so the Swift overlay and its build integration have been removed:
+
+- **deleted the Swift overlay** — `src/swift/` (the `*.swift` sources, `DispatchStubs.m`,
+  `Dispatch.apinotes`, the overlay shims under `src/swift/shims/`, and its `CMakeLists.txt`);
+- **deleted** `cmake/modules/SwiftSupport.cmake`;
+- **removed** the `ENABLE_SWIFT` option, `enable_language(Swift)`, every `if(ENABLE_SWIFT)` block, the
+  `lib/swift`-prefixed install destinations (now ordinary `${CMAKE_INSTALL_LIBDIR}`, `include/dispatch`
+  and `include/os`), and the `COMPILE_LANGUAGE:Swift` compile options — across `CMakeLists.txt`,
+  `src/CMakeLists.txt`, `dispatch/CMakeLists.txt`, `man/CMakeLists.txt`,
+  `src/BlocksRuntime/CMakeLists.txt`, `tests/CMakeLists.txt`, `cmake/config.h.in` and
+  `cmake/modules/dispatchConfig.cmake.in`.
+
+The C and C++ sources are otherwise untouched. The `*_SWIFT_*` availability attributes in the headers
+(`DISPATCH_SWIFT_UNAVAILABLE`, `OS_SWIFT_UNAVAILABLE`, `DISPATCH_REFINED_FOR_SWIFT`, …) are **kept**:
+they are C preprocessor macros that a Swift importer would consume, and they compile to nothing for a
+C/C++ build. Nothing in the remaining C/C++ path requires a Swift compiler.
 
 ## Licence and attribution
 
