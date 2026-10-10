@@ -32,10 +32,17 @@ permissive-only policy. See [`LICENSE`](LICENSE).
 
 ## Build
 
-Upstream's CMake build is kept (`project(dispatch LANGUAGES C CXX)`, building `dispatch` from
-`src/`). It is not yet wired into Agora's standalone build — `libagora-core` currently builds it
-in-tree as a sibling dependency.
+Build into `build/`:
 
-Upstream's Swift overlay and its `ENABLE_SWIFT` build integration have been removed, and the library
-is built as **`libagora-dispatch`** (`libagora-dispatch.a` when static, `libagora-dispatch.so` when
-shared; see [`PROVENANCE.md`](PROVENANCE.md)). The build needs only a C and C++ compiler.
+```sh
+cmake -S . -B build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+cmake --build build
+```
+
+Upstream's CMake build is kept (`project(dispatch LANGUAGES C CXX)`, building `dispatch` from
+`src/`). Upstream's Swift overlay and its `ENABLE_SWIFT` build integration have been removed, and the
+library is built as **`libagora-dispatch`** (`libagora-dispatch.a` when static, `libagora-dispatch.so`
+when shared; see [`PROVENANCE.md`](PROVENANCE.md)). The build needs only a C and C++ compiler.
+
+`libagora-core` consumes the result with `find_package(dispatch CONFIG)` — point it at this
+repository's `build/cmake/modules`.
