@@ -12,7 +12,7 @@ swift-corelibs-libdispatch project. It supplies the dispatch runtime and the blo
 | Upstream commit date | 2026-04-30 |
 | Extraction | the upstream repository root, placed at this repository's root |
 | Extraction date | 2026-10-10 |
-| Source changes by Agora | Swift overlay and Swift build integration removed — see *Agora changes* |
+| Source changes by Agora | Swift overlay and build integration removed; artifact renamed — see *Agora changes* |
 
 ## What was copied
 
@@ -27,6 +27,8 @@ Upstream's `README.md` is kept as `UPSTREAM-README.md` so this repository can ca
 `README.md`.
 
 ## Agora changes
+
+### Swift overlay and build integration removed
 
 Agora does not support Swift, so the Swift overlay and its build integration have been removed:
 
@@ -44,6 +46,20 @@ The C and C++ sources are otherwise untouched. The `*_SWIFT_*` availability attr
 (`DISPATCH_SWIFT_UNAVAILABLE`, `OS_SWIFT_UNAVAILABLE`, `DISPATCH_REFINED_FOR_SWIFT`, …) are **kept**:
 they are C preprocessor macros that a Swift importer would consume, and they compile to nothing for a
 C/C++ build. Nothing in the remaining C/C++ path requires a Swift compiler.
+
+### Artifact naming
+
+The library is built as **`libagora-dispatch`** — `libagora-dispatch.a` when built static,
+`libagora-dispatch.so` when shared (`libagora-dispatch.dylib` on Darwin):
+
+```cmake
+set_target_properties(dispatch PROPERTIES OUTPUT_NAME agora-dispatch)
+```
+
+The CMake target keeps upstream's name, `dispatch`, so `target_link_libraries(... dispatch)` is
+unchanged. The `link` autolink directives in `dispatch/generic/module.modulemap` were updated from
+`link "dispatch"` to `link "agora-dispatch"` to match. The `BlocksRuntime` library keeps its upstream
+name.
 
 ## Licence and attribution
 

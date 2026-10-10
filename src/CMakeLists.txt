@@ -53,6 +53,9 @@ add_library(dispatch
   shims/yield.c
   shims/yield.h)
 
+# The artifact is Agora's: libagora-dispatch (the CMake target keeps upstream's name).
+set_target_properties(dispatch PROPERTIES OUTPUT_NAME agora-dispatch)
+
 if(WIN32)
   target_sources(dispatch PRIVATE
     shims/generic_sys_queue.h
