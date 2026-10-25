@@ -52,3 +52,17 @@ cmake --install build --prefix <prefix>
 
 The build installs a CMake package, so a consumer uses `find_package(dispatch CONFIG)` with
 `-DCMAKE_PREFIX_PATH=<prefix>` — including `libagora-core`.
+
+### The top-level Blocks headers are Dispatch's
+
+`libBlocksRuntime` is the Blocks runtime, so the standalone `include/Block.h` and `include/Block_private.h`
+in a combined prefix are **this component's**. `libagora-objc` installs compatibility copies of those two
+paths when its embedded Blocks runtime is enabled, and two owners for one file is an
+installation-order-dependent overwrite — so a distribution that packages both builds Dispatch with these
+headers installed and the runtime with `-DLIBOBJC_INSTALL_BLOCK_COMPATIBILITY_HEADERS=OFF`. The Objective-C
+runtime keeps its own `objc/blocks_*.h` either way.
+
+A packaging split that wants the reverse ownership does not have to patch anything:
+`-DDISPATCH_INSTALL_BLOCK_HEADERS=OFF` turns this component's copy off, and the runtime's option turns its
+copy back on. `libagora-objc` alone keeps its copies by default, because nothing else in that install would
+provide a top-level `Block.h`.

@@ -315,6 +315,12 @@ add_compile_definitions($<$<COMPILE_LANGUAGE:C,CXX>:HAVE_CONFIG_H>)
 set(INSTALL_TARGET_DIR "${CMAKE_INSTALL_LIBDIR}" CACHE PATH "Path where the libraries will be installed")
 set(INSTALL_DISPATCH_HEADERS_DIR "include/dispatch" CACHE PATH "Path where the headers will be installed")
 set(INSTALL_BLOCK_HEADERS_DIR "include" CACHE PATH "Path where the headers will be installed for the blocks runtime")
+# **AND THIS COMPONENT IS THE TOP-LEVEL BLOCKS HEADERS' OWNER WHEN BOTH ARE INSTALLED.** `libagora-objc` with its
+# embedded runtime installs compatibility copies of `Block.h` and `Block_private.h`; the standalone `libBlocksRuntime`
+# here is the Blocks runtime, so the agreement is that these paths are Dispatch's and the Objective-C runtime's copies
+# are turned off (`-DLIBOBJC_INSTALL_BLOCK_COMPATIBILITY_HEADERS=OFF`). A packaging split may reverse the choice, which
+# is why the installation is an option rather than a deleted rule.
+option(DISPATCH_INSTALL_BLOCK_HEADERS "Install the top-level Block.h and Block_private.h headers that libBlocksRuntime owns" ON)
 set(INSTALL_OS_HEADERS_DIR "include/os" CACHE PATH "Path where the os/ headers will be installed")
 
 

@@ -28,11 +28,13 @@ endif()
 
 add_library(BlocksRuntime::BlocksRuntime ALIAS BlocksRuntime)
 
-install(FILES Block.h
-        DESTINATION ${INSTALL_BLOCK_HEADERS_DIR})
-if(INSTALL_PRIVATE_HEADERS)
-  install(FILES Block_private.h
+if(DISPATCH_INSTALL_BLOCK_HEADERS)
+  install(FILES Block.h
           DESTINATION ${INSTALL_BLOCK_HEADERS_DIR})
+  if(INSTALL_PRIVATE_HEADERS)
+    install(FILES Block_private.h
+            DESTINATION ${INSTALL_BLOCK_HEADERS_DIR})
+  endif()
 endif()
 set_property(GLOBAL APPEND PROPERTY DISPATCH_EXPORTS BlocksRuntime)
 install(TARGETS BlocksRuntime
